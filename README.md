@@ -1,0 +1,2 @@
+# denemerepo
+deneme amaçlı açılmış
