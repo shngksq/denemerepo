@@ -5,6 +5,13 @@ app.use(express.json());
 
 const VERIFY_TOKEN = "likesoar123";
 
+app.use((req, res, next) => {
+  console.log("REQUEST GELDİ:", req.method, req.url);
+  console.log("QUERY:", req.query);
+  console.log("BODY:", JSON.stringify(req.body, null, 2));
+  next();
+});
+
 app.get("/", (req, res) => {
   res.send("LikeSoar Bot Çalışıyor");
 });
@@ -15,18 +22,16 @@ app.get("/webhook", (req, res) => {
   const challenge = req.query["hub.challenge"];
 
   if (mode === "subscribe" && token === VERIFY_TOKEN) {
-    console.log("Webhook doğrulandı");
+    console.log("WEBHOOK DOĞRULANDI");
     return res.status(200).send(challenge);
   }
 
-  res.sendStatus(403);
+  return res.status(403).send("Forbidden");
 });
 
 app.post("/webhook", (req, res) => {
-  console.log("WhatsApp mesajı geldi:");
-  console.log(JSON.stringify(req.body, null, 2));
-
-  res.sendStatus(200);
+  console.log("WHATSAPP POST WEBHOOK GELDİ");
+  return res.sendStatus(200);
 });
 
 const PORT = process.env.PORT || 3000;
